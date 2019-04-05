@@ -1,0 +1,54 @@
+{
+    "id": "2cb69463-6747-48d3-bbcd-0948a3c55052",
+    "projectId": "localhost-lime",
+    "status": "WORKING",
+    "source": {
+        "repoSource": {
+            "projectId": "localhost-lime",
+            "repoName": "github_wizeline_testing-framework-frontend",
+            "branchName": "develop"
+        }
+    },
+    "steps": [{
+        "name": "gcr.io/cloud-builders/yarn",
+        "args": ["install"]
+    }, {
+        "name": "gcr.io/cloud-builders/yarn",
+        "args": ["run", "lint"]
+    }, {
+        "name": "gcr.io/cloud-builders/yarn",
+        "args": ["run", "unittest"]
+    }, {
+        "name": "gcr.io/cloud-builders/yarn",
+        "env": ["REACT_APP_BACKEND_URL=http://13.210.105.109:8080/api/v1", "NODE_PATH=./src"],
+        "args": ["run", "build"]
+    }, {
+        "name": "gcr.io/cloud-builders/gsutil",
+        "args": ["-m", "rsync", "-d", "-r", "build", "gs://staging.wize-test-framework.xyz"]
+    }, {
+        "name": "gcr.io/cloud-builders/gsutil",
+        "args": ["-m", "acl", "ch", "-u", "AllUsers:R", "gs://staging.wize-test-framework.xyz/**"]
+    }],
+    "createTime": "2019-04-05T06:28:33.980561366Z",
+    "startTime": "2019-04-05T06:28:34.674376036Z",
+    "timeout": "600s",
+    "logsBucket": "gs://163230409317.cloudbuild-logs.googleusercontent.com",
+    "sourceProvenance": {
+        "resolvedRepoSource": {
+            "projectId": "localhost-lime",
+            "repoName": "github_wizeline_testing-framework-frontend",
+            "commitSha": "e14e20071235095469457c6aacd4fb0da91a3137"
+        }
+    },
+    "buildTriggerId": "7f042d57-34db-4fb5-90d8-f159ca4c3677",
+    "options": {
+        "substitutionOption": "ALLOW_LOOSE",
+        "logging": "LEGACY"
+    },
+    "logUrl": "https://console.cloud.google.com/gcr/builds/2cb69463-6747-48d3-bbcd-0948a3c55052?project=163230409317",
+    "substitutions": {
+        "_FE_STAGING_BUCKET_NAME": "staging.wize-test-framework.xyz",
+        "_REACT_APP_BACKEND_URL": "http://13.210.105.109:8080/api/v1"
+    },
+    "tags": ["event-a5707122-b1db-4d10-bc43-470a71d0bae7", "trigger-7f042d57-34db-4fb5-90d8-f159ca4c3677"]
+}
