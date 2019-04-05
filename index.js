@@ -58,7 +58,7 @@ const createSlackMessage = (build) => {
     fields: [
         {
             "title": "Branch: ",
-            "value": build.source.repoSource.branchName,
+            "value": build.source.repoSource.branchName + ' :pick: :unicorn-run:',
             "short": false
         },
         {
