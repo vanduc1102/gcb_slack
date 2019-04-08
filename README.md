@@ -24,5 +24,5 @@ cp .env.yaml.sample .env.yaml
 ## Deploy command
 
 ```
-gcloud functions deploy subscribe --stage-bucket [STAGING_BUCKET_NAME] --trigger-topic cloud-builds --runtime nodejs10 --env-vars-file .env.yaml
+gcloud functions deploy subscribe --stage-bucket testing-framework-functions --trigger-topic cloud-builds --runtime nodejs10 --env-vars-file .env.yaml
 ```

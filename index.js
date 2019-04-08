@@ -69,7 +69,16 @@ const createSlackMessage = (build) => {
     ]
   };
 
-  if(build.status ==='SUCCESS' && build.source.repoSource.branchName === 'develop'){
+  if(build.status ==='FAILURE'){
+    attachment.fields[0] ={
+      "title": "Branch: ",
+      "value": build.source.repoSource.branchName +
+       ' :sad-panda: :saddog: :faceangry: :hankey: :skull_and_crossbones:',
+      "short": false
+      };
+  }
+
+  if (build.status ==='SUCCESS' && build.source.repoSource.branchName === 'develop') {
     attachment.fields = [
         {
             "title": "Branch: ",
@@ -80,14 +89,22 @@ const createSlackMessage = (build) => {
           "title": "Commit: ",
           "value": getRepo(build),
           "short": false
-        },
-        {
-          "title": "App Url: ",
-          "value": 'http://' + build.substitutions['_FE_STAGING_BUCKET_NAME'],
-          "short": false
         }
     ]
+    if (build.substitutions && build.substitutions['_FE_STAGING_BUCKET_NAME']) {
+      attachment.fields.push({
+        "title": "App Url: ",
+        "value": 'http://' + build.substitutions['_FE_STAGING_BUCKET_NAME'],
+        "short": false
+      })
+    }
   }
+
+  attachment.fields.push({
+    "title": "Cloud Build Url: ",
+    "value": build.logUrl,
+    "short": false
+  })
 
   let message = {
     attachments: [
